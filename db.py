@@ -7,20 +7,22 @@ log = logging.getLogger(__name__)
 
 def get_database():
     """
+
     gets the database connection
     :return: None upon failure.
     """
     try:
         engine = get_connection_from_profile()
         log.info('Connected to postgreSQL database.')
+        return engine
     except IOError:
-        log.exception('Failted to get database connection.')
+        log.exception('Failed to get database connection.')
         return None, 'fail'
 
 
 def get_connection_from_profile(config_file='config.json'):
     """
-    sets up datbase connection from config file.
+    sets up database connection from config file.
     :param config_file: the postgres config file containing host, user, password, database, port
     :return:
     """
@@ -39,10 +41,10 @@ def get_engine(db):
     :param db: the database object with the user, database host, password, and port.
     :return:
     """
-    url = 'postgresql://{user}:passwd}@{host}:{port}/{db}'.format(
+    url = 'postgresql://{user}:{passwd}@{host}:{port}/{db}'.format(
         user=db['user'], passwd=db['password'], host=db['host'], port=db['port'], db=db['database']
     )
-    engine = create_engine(url, pool_size = 50)
+    engine = create_engine(url, pool_size=50)
     return engine
 
 
