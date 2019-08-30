@@ -37,20 +37,19 @@ class Transaction:
     def append(self, sql):
         self.sql_transaction.append(sql)
 
-        if len(self.sql_transaction) > 50:
+        if len(self.sql_transaction) > 5000:
             self.c.execute('BEGIN TRANSACTION')
             try:
                 print('Inserting...')
-                for [s, t] in trans.sql_transaction:
-                    self.c.execute(s, t)
+                for [q, s] in trans.sql_transaction:
+                    self.c.execute(q, s)
                 self.con.commit()
             except Exception as e:
                 print('error', str(e))
                 self.con.rollback()
                 pass
+            print('Done.')
             self.clear()
-
-        self.sql_transaction.append(sql)
 
     def clear(self):
         self.sql_transaction = []
@@ -61,11 +60,10 @@ trans = Transaction()
 
 def insert_comment(parent_id, comment_id, comment, sub, sub_id, utc, controversiality, score):
     try:
-        if len(comment) <= 256:
+        if len(comment) <= 175:
             sql = ["""
-                INSERT INTO comments (parent_id, comment_id, comment, subreddit, subreddit_id, created_utc, controversiality, score)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-                ON CONFLICT (parent_id, comment_id, subreddit_id, score) DO NOTHING;
+                INSERT OR IGNORE INTO comments (parent_id, comment_id, comment, subreddit, subreddit_id, created_utc, controversiality, score)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?);
                 """, (parent_id, comment_id, comment, sub, sub_id, utc, controversiality, score)]
             trans.append(sql)
     except Exception as e:

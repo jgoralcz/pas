@@ -41,10 +41,11 @@ def get_engine(db):
     :param db: the database object with the user, database host, password, and port.
     :return:
     """
-    url = 'postgresql://{user}:{passwd}@{host}:{port}/{db}'.format(
-        user=db['user'], passwd=db['password'], host=db['host'], port=db['port'], db=db['database']
-    )
-    engine = create_engine(url, pool_size=50)
+    # url = 'postgresql://{user}:{passwd}@{host}:{port}/{db}'.format(
+    #     user=db['user'], passwd=db['password'], host=db['host'], port=db['port'], db=db['database']
+    # )
+    url = 'sqlite:///{db}'.format(db=db['database'])
+    engine = create_engine(url)
     return engine
 
 
