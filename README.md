@@ -3,7 +3,11 @@ PAS (parsing and storing) reads large json files and stores them into a postgres
 
 I would suggest either using the Dockerfile or creating a virtual environment for ease of use.
 
-#####Virtual Environment
+You can find the files I used at: https://files.pushshift.io/reddit/comments/
+
+you can then use ML or store it into a database for a full text search.
+
+## Virtual Environment
 1. virtualenv -p python3.6 venv_pas 
 2. source venv_pas/bin/activate 
 3. pip install -r requirements.txt 

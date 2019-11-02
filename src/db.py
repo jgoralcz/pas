@@ -7,7 +7,6 @@ log = logging.getLogger(__name__)
 
 def get_database():
     """
-
     gets the database connection
     :return: None upon failure.
     """
